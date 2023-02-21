@@ -36,4 +36,26 @@ router.post('/create', (req, res) => {
     res.send(book);
 });
 
+router.put('/:id', (req, res) => {
+    // B1. Xac dinh ID co ton tai hay khong ?
+    const findBook = books.find((b) => b.id === parseInt(req.params.id));
+    if (!findBook) {
+        res.status(404).send('Khong tim thay quyen sach voi ID nay');
+    }
+
+    // B2. Thuc hien validation thong tin quyen sach - title & author
+    const validationResult = bookSchema.validate(req.body);
+    // console.log({validationResult});
+    console.log(JSON.stringify(validationResult));
+    if (validationResult.error) {
+        return res.status(400).send(validationResult.error.details[0].message);
+    }
+
+    // B3. Cap nhat thong tin title va author - tra ve cho user
+    findBook.title = req.body.title;
+    findBook.author = req.body.author;
+    res.send(findBook);
+});
+
+
 module.exports = router;

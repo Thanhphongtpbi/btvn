@@ -7,8 +7,13 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var booksRouter = require('./routes/book')
+var bai2Router = require('./btvn/Day3/bai2');
+var log = require('./btvn/Day3/log')
 
 var app = express();
+
+// sử dụng log 
+app.use(log)
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -23,6 +28,19 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/books', booksRouter);
+
+// sử dụng bài tập về nhà 
+app.use('/admin', bai2Router);
+
+// Khi user request den homepage
+app.get('/', function (req, res) {
+  res.send('This is homepage content');
+});
+
+// Khi user request to page admin
+app.get('/admin', function (req, res) {
+  res.send('Trang quan tri');
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
